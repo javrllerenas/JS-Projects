@@ -2,22 +2,32 @@ const HOURHAND = document.querySelector("#hour");
 const MINUTEHAND = document.querySelector("#minute");
 const SECONDHAND = document.querySelector("#second");
 
+
+// === initial clock setup === //
+    let date = new Date();
+    let hr   = date.getHours();
+    let min  = date.getMinutes();
+    let sec  = date.getSeconds();
+       
+
+    hr  = hrToDeg( hr, min );
+    min = minToDeg( min, sec );
+    sec = secToDeg( sec );
+    console.log("Hr: ", hr, " | Min: ", min, " | Sec: ", sec);
+
+
 // === runTheClock === //
 // Func that updates the clock
 //
 function runTheClock() {
 
-    let date = new Date();
+    hr  += 360 / 12 / 60 / 60;
+    min += 360 / 60 / 60;
+    sec += 360 / 60;
 
-    let hr  = date.getHours();
-    let min = date.getMinutes();
-    let sec = date.getSeconds();
-    console.log("Hr: ", hr, " | Min: ", min, " | Sec: ", sec);
-
-
-    HOURHAND.style.transform = "rotate(" + hrToDeg(hr, min) + "deg)";
-    MINUTEHAND.style.transform = "rotate(" + minToDeg(min, sec) + "deg)";
-    SECONDHAND.style.transform = "rotate(" + secToDeg(sec) + "deg)";
+    HOURHAND.style.transform = "rotate(" + hr + "deg)";
+    MINUTEHAND.style.transform = "rotate(" + min + "deg)";
+    SECONDHAND.style.transform = "rotate(" + sec + "deg)";
 };
 
 // === time to degrees === //
