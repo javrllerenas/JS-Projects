@@ -6,9 +6,9 @@ const theTimer = document.querySelector(".timer");
 const SCORE = document.querySelector("#score");
 
 let first_key = true;
-let sec = 0,
-    min = 0,
-    hr  = 0;
+let ms = 0,
+    sec = 0,
+    min = 0;
 let score = 0;
 let running; // interval for running the clock
 
@@ -20,21 +20,20 @@ function intToStr(num) {
 
 // Run a standard minute/second/hundredths timer:
 function runClock() {
-    sec += 1;
+    ms += 1;
 
+    if (ms == 100) {
+        ms = 0;
+        sec += 1;
+    }
     if (sec == 60) {
         sec = 0;
         min += 1;
     }
-    if (min == 60) {
-        min = 0;
-        hr += 1;
-    }
-    if (hr == 24) hr = 0;
+    if (min == 60) min = 0;
 
-    let str = intToStr(hr) + ':' + intToStr(min) + ':' + intToStr(sec);
+    let str = intToStr(min) + ':' + intToStr(sec) + ':' + intToStr(ms);
     theTimer.innerHTML = str;
-    console.log("time: ", str)
 }
 
 // Match the text entered with the provided text on the page:
@@ -62,7 +61,7 @@ function start(e) {
     if ( first_key === true) {
         first_key = false;
         console.log("Starting the clock...");
-        running = setInterval(runClock, 1000);
+        running = setInterval(runClock, 10);
     }
 }
 
