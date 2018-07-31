@@ -1,9 +1,12 @@
 const testWrapper = document.querySelector(".test-wrapper");
 const testArea = document.querySelector("#test-area");
-const originText = document.querySelector("#origin-text p").innerHTML;
+let textToMatch = document.querySelector("#origin-text p").innerHTML;
+let originText = document.querySelector("#origin-text p");
 const resetButton = document.querySelector("#reset");
 const theTimer = document.querySelector(".timer");
 const SCORE = document.querySelector("#score");
+
+const URL = "https://api.icndb.com/jokes/random";
 
 let first_key = true;
 let ms = 0,
@@ -11,6 +14,7 @@ let ms = 0,
     min = 0;
 let score = 0;
 let running; // interval for running the clock
+let nextSentece = getNext();
 
 // Add leading zero to numbers 9 or below (purely for aesthetics):
 function intToStr(num) {
@@ -39,14 +43,21 @@ function runClock() {
 // Match the text entered with the provided text on the page:
 function spellCheck() {
     let textEntered = testArea.value;
-    let originMatch = originText.substring(0, textEntered.length)
+    let originMatch = textToMatch.substring(0, textEntered.length)
 
     // MATCH!!!
-    if (textEntered === originText) {
+    if (textEntered === textToMatch) {
         console.log("THE STRING MATCHES!");
         score += 1;
         SCORE.innerHTML = score.toString();
         testArea.value = ""; testWrapper.style.borderColor = "gray";
+
+        console.log("DEBUG: next: ", nextSentece);
+        // update text
+        originText.innerHTML = nextSentece;
+        textToMatch = nextSentece;
+        nextSentece = getNext();
+
     } else {
         if (textEntered == originMatch) {
             testWrapper.style.borderColor = "#65CCf3";
@@ -84,3 +95,26 @@ function reset() {
 testArea.addEventListener("keypress", start, false); 
 testArea.addEventListener("keyup", spellCheck, false);
 resetButton.addEventListener("click", reset, false);
+
+
+
+// TRYING TO FETCH ASYNCH SENTENCES
+
+function getNext() {
+    let sentence;
+    try {
+        let req = new XMLHttpRequest();
+        req.open("GET", URL, false);
+        req.send(null);
+        if (req.status == 200) {
+            console.log("NEXT: ", JSON.parse(req.response).value.joke);
+            sentence = JSON.parse(req.response).value.joke;
+        } else {
+            sentence = "This is the super normal boring lame ugly sentence that appears when nothing good's there.";
+        }
+
+    } catch {
+        sentence = "This is the super normal boring lame ugly sentence that appears when nothing good's there.";
+    }
+    return sentence;
+} 
