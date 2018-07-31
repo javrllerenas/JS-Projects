@@ -1,6 +1,11 @@
-# 🕙 Analog Clock 🕥
+<div align="center">
 
-Example of a clock which keeps the current time.
+<h1><strong>🕙 Analog Clock 🕥</strong></h1>
+<h4>You know... to track time.</h4>
+
+<img src='img/capture.gif' width="200">
+
+</div>
 
 ## My Work
 * __Provided__: `.html` and `.css` files <br>
