@@ -9,4 +9,4 @@
 
 ## My Work
 * __Provided__: `.html` and `.css` files <br>
-* __Mi Work__: The `.js` file
+* __My Work__: The `.js` file
